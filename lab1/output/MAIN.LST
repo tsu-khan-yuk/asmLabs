@@ -1,0 +1,78 @@
+Turbo Assembler	 Version 4.0	    01/25/21 01:43:55	    Page 1
+lab1\main.ASM
+
+
+
+      1				     ;.386
+      2
+      3
+      4	0000			     STACK_SEG	     SEGMENT PARA STACK	"STACK"
+      5	0000  40*(53 54	41 43 4B)			     db	     64	     dup ("STACK")
+      6	0140			     STACK_SEG	     ENDS
+      7
+      8
+      9	0000			     DATA_SEG	     SEGMENT PARA PUBLIC "DATA"
+     10	0000  0A 14 1E 28		     array   db	     10, 20, 30, 40
+     11	0004  04*(3F)			     dest    db	     4 dup ("?")
+     12	0008			     DATA_SEG	     ENDS
+     13
+     14
+     15	0000			     CODE_SEG	     SEGMENT PARA PUBLIC "CODE"
+     16
+     17	0000				     MAIN    PROC FAR
+     18
+     19						     ASSUME	     CS:CODE_SEG, DS:DATA_SEG, SS:STACK_SEG
+     20
+     21	0000  1E				     push    ds
+     22	0001  33 C0				     xor     ax, ax
+     23	0003  50				     push    ax
+     24
+     25	0004  B8 0000s				     mov     ax, DATA_SEG
+     26	0007  8E D8				     mov     ds, ax
+     27
+     28						     ;*
+     29	0009  C6 06 0004r 00			     mov     dest[0], 0
+     30	000E  C6 06 0005r 00			     mov     dest[1], 0
+     31	0013  C6 06 0006r 00			     mov     dest[2], 0
+     32	0018  C6 06 0007r 00			     mov     dest[3], 0
+     33
+     34	001D  A0 0000r				     mov     al, array[0]
+     35	0020  A2 0007r				     mov     dest[3], al
+     36	0023  A0 0001r				     mov     al, array[1]
+     37	0026  A2 0006r				     mov     dest[2], al
+     38	0029  A0 0002r				     mov     al, array[2]
+     39	002C  A2 0005r				     mov     dest[1], al
+     40	002F  A0 0003r				     mov     al, array[3]
+     41	0032  A2 0004r				     mov     dest[0], al
+     42
+     43	0035  CB				     ret
+     44	0036				     MAIN    ENDP
+     45
+     46	0036			     CODE_SEG	     ENDS
+     47				     END	     MAIN
+Turbo Assembler	 Version 4.0	    01/25/21 01:43:55	    Page 2
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "01/25/21"
+??FILENAME			  Text	 "main	  "
+??TIME				  Text	 "01:43:55"
+??VERSION			  Number 0400
+@CPU				  Text	 0101H
+@CURSEG				  Text	 CODE_SEG
+@FILENAME			  Text	 MAIN
+@WORDSIZE			  Text	 2
+ARRAY				  Byte	 DATA_SEG:0000
+DEST				  Byte	 DATA_SEG:0004
+MAIN				  Far	 CODE_SEG:0000
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+CODE_SEG			  16  0036 Para	  Public  CODE
+DATA_SEG			  16  0008 Para	  Public  DATA
+STACK_SEG			  16  0140 Para	  Stack	  STACK
+

@@ -1,0 +1,3 @@
+(Windows) Status Window is being started together with main DOSBox window.
+(Linux) You may have to start DOSBox from a console to see Status Window.
+(MAC OS X) Right click on DOSBox.app, choose "Show Package Contents"->enter "Contents"->enter "MacOS"->run "DOSBox"
