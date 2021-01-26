@@ -1,3 +1,6 @@
+# Own
+*.obj
+
 # Prerequisites
 *.d
 

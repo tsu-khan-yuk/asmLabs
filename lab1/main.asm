@@ -1,45 +1,44 @@
 
-STACK_SEG	SEGMENT PARA STACK "STACK"
-			db 	64	dup ("STACK")
-STACK_SEG	ENDS
+STSEG	SEGMENT PARA STACK "STACK"
+			DB 	64	DUP ("STACK")
+STSEG	ENDS
 
 
-DATA_SEG 	SEGMENT PARA PUBLIC "DATA"
-	array	db 	10, 20, 30, 40
-	dest	db 	4 dup ("?")
-DATA_SEG	ENDS
+DSEG 	SEGMENT PARA PUBLIC "DATA"
+	SOURCE	DB 	10, 20, 30, 40
+	DEST	DB 	4 DUP ("?")
+DSEG	ENDS
 
 
-CODE_SEG 	SEGMENT	PARA PUBLIC "CODE"
+CSEG 	SEGMENT	PARA PUBLIC "CODE"
 
 	MAIN 	PROC FAR
 
-		ASSUME 		CS:CODE_SEG, DS:DATA_SEG, SS:STACK_SEG
+		ASSUME 		CS:CSEG, DS:DSEG, SS:STSEG
 
-		push	ds
-		xor 	ax, ax
-		push 	ax
+		PUSH	DS
+		XOR 	AX, AX
+		PUSH 	AX
 
-		mov 	ax, DATA_SEG
-		mov 	ds, ax
+		MOV 	AX, DSEG
+		MOV 	DS, AX
 
-		;*
-		mov 	dest[0], 0
-		mov 	dest[1], 0
-		mov 	dest[2], 0
-		mov 	dest[3], 0
+		MOV 	DEST, 0
+		MOV 	DEST + 1, 0
+		MOV 	DEST + 2, 0
+		MOV 	DEST + 3, 0
 
-		mov 	al, array[0]
-		mov 	dest[3], al
-		mov 	al, array[1]
-		mov 	dest[2], al
-		mov 	al, array[2]
-		mov 	dest[1], al
-		mov 	al, array[3]
-		mov 	dest[0], al
+		MOV 	AL, SOURCE
+		MOV 	DEST + 3, AL
+		MOV 	AL, SOURCE + 1
+		MOV 	DEST + 2, AL
+		MOV 	AL, SOURCE + 2
+		MOV 	DEST + 1, AL
+		MOV 	AL, SOURCE + 3
+		MOV 	DEST, AL
 
-		ret
+		RET
 	MAIN 	ENDP
 
-CODE_SEG 	ENDS
-END 		MAIN
+CSEG 	ENDS
+END 	MAIN

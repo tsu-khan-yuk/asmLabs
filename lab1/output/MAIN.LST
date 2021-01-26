@@ -1,56 +1,53 @@
-Turbo Assembler	 Version 4.0	    01/25/21 01:43:55	    Page 1
+Turbo Assembler	 Version 4.0	    01/26/21 19:45:23	    Page 1
 lab1\main.ASM
 
 
 
-      1				     ;.386
-      2
-      3
-      4	0000			     STACK_SEG	     SEGMENT PARA STACK	"STACK"
-      5	0000  40*(53 54	41 43 4B)			     db	     64	     dup ("STACK")
-      6	0140			     STACK_SEG	     ENDS
-      7
-      8
-      9	0000			     DATA_SEG	     SEGMENT PARA PUBLIC "DATA"
-     10	0000  0A 14 1E 28		     array   db	     10, 20, 30, 40
-     11	0004  04*(3F)			     dest    db	     4 dup ("?")
-     12	0008			     DATA_SEG	     ENDS
-     13
+      1
+      2	0000			     STSEG   SEGMENT PARA STACK	"STACK"
+      3	0000  40*(53 54	41 43 4B)			     DB	     64	     DUP ("STACK")
+      4	0140			     STSEG   ENDS
+      5
+      6
+      7	0000			     DSEG    SEGMENT PARA PUBLIC "DATA"
+      8	0000  0A 14 1E 28		     SOURCE  DB	     10, 20, 30, 40
+      9	0004  04*(3F)			     DEST    DB	     4 DUP ("?")
+     10	0008			     DSEG    ENDS
+     11
+     12
+     13	0000			     CSEG    SEGMENT PARA PUBLIC "CODE"
      14
-     15	0000			     CODE_SEG	     SEGMENT PARA PUBLIC "CODE"
+     15	0000				     MAIN    PROC FAR
      16
-     17	0000				     MAIN    PROC FAR
+     17						     ASSUME	     CS:CSEG, DS:DSEG, SS:STSEG
      18
-     19						     ASSUME	     CS:CODE_SEG, DS:DATA_SEG, SS:STACK_SEG
-     20
-     21	0000  1E				     push    ds
-     22	0001  33 C0				     xor     ax, ax
-     23	0003  50				     push    ax
-     24
-     25	0004  B8 0000s				     mov     ax, DATA_SEG
-     26	0007  8E D8				     mov     ds, ax
-     27
-     28						     ;*
-     29	0009  C6 06 0004r 00			     mov     dest[0], 0
-     30	000E  C6 06 0005r 00			     mov     dest[1], 0
-     31	0013  C6 06 0006r 00			     mov     dest[2], 0
-     32	0018  C6 06 0007r 00			     mov     dest[3], 0
-     33
-     34	001D  A0 0000r				     mov     al, array[0]
-     35	0020  A2 0007r				     mov     dest[3], al
-     36	0023  A0 0001r				     mov     al, array[1]
-     37	0026  A2 0006r				     mov     dest[2], al
-     38	0029  A0 0002r				     mov     al, array[2]
-     39	002C  A2 0005r				     mov     dest[1], al
-     40	002F  A0 0003r				     mov     al, array[3]
-     41	0032  A2 0004r				     mov     dest[0], al
+     19	0000  1E				     PUSH    DS
+     20	0001  33 C0				     XOR     AX, AX
+     21	0003  50				     PUSH    AX
+     22
+     23	0004  B8 0000s				     MOV     AX, DSEG
+     24	0007  8E D8				     MOV     DS, AX
+     25
+     26	0009  C6 06 0004r 00			     MOV     DEST, 0
+     27	000E  C6 06 0005r 00			     MOV     DEST + 1, 0
+     28	0013  C6 06 0006r 00			     MOV     DEST + 2, 0
+     29	0018  C6 06 0007r 00			     MOV     DEST + 3, 0
+     30
+     31	001D  A0 0000r				     MOV     AL, SOURCE
+     32	0020  A2 0007r				     MOV     DEST + 3, AL
+     33	0023  A0 0001r				     MOV     AL, SOURCE	+ 1
+     34	0026  A2 0006r				     MOV     DEST + 2, AL
+     35	0029  A0 0002r				     MOV     AL, SOURCE	+ 2
+     36	002C  A2 0005r				     MOV     DEST + 1, AL
+     37	002F  A0 0003r				     MOV     AL, SOURCE	+ 3
+     38	0032  A2 0004r				     MOV     DEST, AL
+     39
+     40	0035  CB				     RET
+     41	0036				     MAIN    ENDP
      42
-     43	0035  CB				     ret
-     44	0036				     MAIN    ENDP
-     45
-     46	0036			     CODE_SEG	     ENDS
-     47				     END	     MAIN
-Turbo Assembler	 Version 4.0	    01/25/21 01:43:55	    Page 2
+     43	0036			     CSEG    ENDS
+     44				     END     MAIN
+Turbo Assembler	 Version 4.0	    01/26/21 19:45:23	    Page 2
 Symbol Table
 
 
@@ -58,21 +55,21 @@ Symbol Table
 
 Symbol Name			  Type	 Value
 
-??DATE				  Text	 "01/25/21"
+??DATE				  Text	 "01/26/21"
 ??FILENAME			  Text	 "main	  "
-??TIME				  Text	 "01:43:55"
+??TIME				  Text	 "19:45:23"
 ??VERSION			  Number 0400
 @CPU				  Text	 0101H
-@CURSEG				  Text	 CODE_SEG
+@CURSEG				  Text	 CSEG
 @FILENAME			  Text	 MAIN
 @WORDSIZE			  Text	 2
-ARRAY				  Byte	 DATA_SEG:0000
-DEST				  Byte	 DATA_SEG:0004
-MAIN				  Far	 CODE_SEG:0000
+DEST				  Byte	 DSEG:0004
+MAIN				  Far	 CSEG:0000
+SOURCE				  Byte	 DSEG:0000
 
 Groups & Segments		  Bit Size Align  Combine Class
 
-CODE_SEG			  16  0036 Para	  Public  CODE
-DATA_SEG			  16  0008 Para	  Public  DATA
-STACK_SEG			  16  0140 Para	  Stack	  STACK
+CSEG				  16  0036 Para	  Public  CODE
+DSEG				  16  0008 Para	  Public  DATA
+STSEG				  16  0140 Para	  Stack	  STACK
 
