@@ -1,4 +1,4 @@
-
+;; main.asm
 STSEG	SEGMENT PARA STACK "STACK"
 			DB 	64	DUP ("STACK")
 STSEG	ENDS
