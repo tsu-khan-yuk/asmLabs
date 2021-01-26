@@ -1,2 +1,2 @@
-tools\tasm lab1\main lab1\output\main lab1\output\main
-tools\tlink lab1\output\main lab1\output\main lab1\output\main
+tools\tasm lab1\main.asm, lab1\output\, lab1\output\main.lst
+tools\tlink lab1\output\main.obj
