@@ -1,9 +1,9 @@
-Turbo Assembler	 Version 4.0	    01/26/21 23:21:24	    Page 1
+Turbo Assembler	 Version 4.0	    01/27/21 02:24:22	    Page 1
 lab1\main.asm
 
 
 
-      1
+      1				     ;;	main.asm
       2	0000			     STSEG   SEGMENT PARA STACK	"STACK"
       3	0000  40*(53 54	41 43 4B)			     DB	     64	     DUP ("STACK")
       4	0140			     STSEG   ENDS
@@ -47,7 +47,7 @@ lab1\main.asm
      42
      43	0036			     CSEG    ENDS
      44				     END     MAIN
-Turbo Assembler	 Version 4.0	    01/26/21 23:21:24	    Page 2
+Turbo Assembler	 Version 4.0	    01/27/21 02:24:22	    Page 2
 Symbol Table
 
 
@@ -55,9 +55,9 @@ Symbol Table
 
 Symbol Name			  Type	 Value
 
-??DATE				  Text	 "01/26/21"
+??DATE				  Text	 "01/27/21"
 ??FILENAME			  Text	 "main	  "
-??TIME				  Text	 "23:21:24"
+??TIME				  Text	 "02:24:22"
 ??VERSION			  Number 0400
 @CPU				  Text	 0101H
 @CURSEG				  Text	 CSEG
