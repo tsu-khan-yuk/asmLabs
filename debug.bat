@@ -1,1 +1,2 @@
-tools\td.exe lab1\output\main.exe
+set lab_num=1
+tools\td.exe lab%lab_num%\output\main.exe

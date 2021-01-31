@@ -1,0 +1,127 @@
+Turbo Assembler	 Version 4.0	    01/30/21 01:15:07	    Page 1
+lab2\main.asm
+
+
+
+      1				     ;;	main.asm
+      2
+      3	0000			     STACK_SEG	     SEGMENT PARA STACK	"STACK"
+      4	0000  20*(3F)							     db	 32 dup	("?")
+      5	0020			     STACK_SEG	     ENDS
+      6
+      7	0000			     DATA_SEG	     SEGMENT PARA PUBLIC "DATA"
+      8	0000  0E 49 6E 70 75 74	20+	     hello_string    db	     14, "Input	number:	"
+      9	      6E 75 6D 62 65 72	3A+
+     10	      20
+     11	000F  05 ?? 05*(3F)		     input_digit	     db	     5,	?, 5 dup("?")
+     12	0016			     DATA_SEG	     ENDS
+     13
+     14
+     15	0000			     CODE_SEG	     SEGMENT PARA PUBLIC "CODE"
+     16
+     17					     ASSUME  CS:CODE_SEG, DS:DATA_SEG, SS:STACK_SEG
+     18
+     19	0000				     OUTPUT_PROC	     PROC NEAR
+     20
+     21	0000  B4 02				     mov     ah, 02h
+     22	0002					     printing:
+     23	0002  8A 15					     mov     dl, [di]
+     24	0004  CD 21					     int     21h
+     25	0006  47					     inc     di
+     26	0007  E2 F9				     loop    printing
+     27
+     28	0009  C3				     ret
+     29	000A				     OUTPUT_PROC	     ENDP
+     30
+     31
+     32	000A				     INPUT_VALUE     PROC NEA
+     33
+     34	000A  B4 0A				     mov     ah, 10
+     35	000C  CD 21				     int     21h
+     36
+     37	000E  C3				     ret
+     38	000F				     INPUT_VALUE     ENDP
+     39
+     40
+     41	000F				     STR_TO_INT		     PROC NEAR
+     42	000F  C3				     ret
+     43	0010				     STR_TO_INT		     ENDP
+     44
+     45
+     46	0010				     INT_TO_STR		     PROC NEAR
+     47	0010  C3				     ret
+     48	0011				     INT_TO_STR		     ENDP
+     49
+     50					     ; //////////////////////{ MAIN }/////////////////////
+     51
+     52	0011				     MAIN	     PROC FAR
+     53
+     54	0011  1E				     push    DS
+     55	0012  33 C0				     xor     ax, ax
+     56	0014  50				     push    ax
+     57
+Turbo Assembler	 Version 4.0	    01/30/21 01:15:07	    Page 2
+lab2\main.asm
+
+
+
+     58	0015  B8 0000s				     mov     ax, DATA_SEG
+     59	0018  8E D8				     mov     DS, ax
+     60
+     61
+     62	001A  BF 0001r				     lea     di, hello_string[1]
+     63	001D  B9 0000				     mov     cx, 0
+     64	0020  8A 0E 0000r			     mov     cl, hello_string[0]
+     65	0024  E8 FFD9				     call    OUTPUT_PROC
+     66
+     67	0027  BA 000Fr				     lea     dx, input_digit
+     68	002A  E8 FFDD				     call    INPUT_VALUE
+     69
+     70						     ; call  STR_TO_INT
+     71
+     72	002D  8B 0E 0010r			     mov     cx, word ptr input_digit[1]
+     73	0031  BB 0000				     mov     bx, 0
+     74	0034					     num_checking:
+     75
+     76	0034  43					     inc     bx
+     77
+     78	0035  E2 FD				     loop num_checking
+     79
+     80	0037  CB				     ret
+     81	0038				     MAIN    ENDP
+     82
+     83	0038			     CODE_SEG	     ENDS
+     84				     END	     MAIN
+Turbo Assembler	 Version 4.0	    01/30/21 01:15:07	    Page 3
+Symbol Table
+
+
+
+
+Symbol Name			  Type	 Value
+
+??DATE				  Text	 "01/30/21"
+??FILENAME			  Text	 "main	  "
+??TIME				  Text	 "01:15:07"
+??VERSION			  Number 0400
+@CPU				  Text	 0101H
+@CURSEG				  Text	 CODE_SEG
+@FILENAME			  Text	 MAIN
+@WORDSIZE			  Text	 2
+HELLO_STRING			  Byte	 DATA_SEG:0000
+INPUT_DIGIT			  Byte	 DATA_SEG:000F
+INPUT_VALUE			  Near	 CODE_SEG:000A
+INT_TO_STR			  Near	 CODE_SEG:0010
+MAIN				  Far	 CODE_SEG:0011
+NEA				  Number [STACK_SEG:BP+0004]
+NUM_CHECKING			  Near	 CODE_SEG:0034
+OUTPUT_PROC			  Near	 CODE_SEG:0000
+PRINTING			  Near	 CODE_SEG:0002
+STR_TO_INT			  Near	 CODE_SEG:000F
+
+Groups & Segments		  Bit Size Align  Combine Class
+
+CODE_SEG			  16  0038 Para	  Public  CODE
+DATA_SEG			  16  0016 Para	  Public  DATA
+STACK_SEG			  16  0020 Para	  Stack	  STACK
+

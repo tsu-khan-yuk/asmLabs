@@ -1,2 +1,3 @@
-tools\tasm lab1\main.asm, lab1\output\, lab1\output\main.lst
-tools\tlink lab1\output\main.obj
+set lab_num=1
+tools\tasm lab%lab_num%\main.asm, lab%lab_num%\output\, lab%lab_num%\output\main.lst
+tools\tlink lab%lab_num%\output\main.obj
