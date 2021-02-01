@@ -1,9 +1,9 @@
 
  Start  Stop   Length Name               Class
 
- 00000H 0001FH 00020H STACK_SEG          STACK
- 00020H 00035H 00016H DATA_SEG           DATA
- 00040H 00077H 00038H CODE_SEG           CODE
+ 00000H 00027H 00028H STACK_SEG          STACK
+ 00030H 00052H 00023H DATA_SEG           DATA
+ 00060H 00103H 000A4H CODE_SEG           CODE
 
-Program entry point at 0004:0011
+Program entry point at 0006:007E
 
