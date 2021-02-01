@@ -1,3 +1,4 @@
-(Windows) Status Window is being started together with main DOSBox window.
-(Linux) You may have to start DOSBox from a console to see Status Window.
-(MAC OS X) Right click on DOSBox.app, choose "Show Package Contents"->enter "Contents"->enter "MacOS"->run "DOSBox"
+; https://prog-cpp.ru/asm-segment/
+; 87   https://sites.google.com/site/sistprogr/lekcii1/lek8
+; 100  http://av-assembler.ru/instructions/div.php
+; 104  http://av-assembler.ru/instructions/test.php

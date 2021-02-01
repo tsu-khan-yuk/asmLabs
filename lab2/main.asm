@@ -1,8 +1,4 @@
 ;; main.asm
-; https://prog-cpp.ru/asm-segment/
-STACK_SEG 	SEGMENT PARA STACK "STACK"
-					db  8 dup ("STACK")
-STACK_SEG 	ENDS
 
 DATA_SEG 	SEGMENT PARA PUBLIC "DATA"
 	hello_string 	db 	14, "Input number: "
@@ -13,7 +9,7 @@ DATA_SEG 	ENDS
 
 CODE_SEG 	SEGMENT PARA PUBLIC "CODE"
 
-	ASSUME 	CS:CODE_SEG, DS:DATA_SEG, SS:STACK_SEG
+	ASSUME 	CS:CODE_SEG, DS:DATA_SEG
 
 	OUTPUT_PROC		PROC NEAR
 
@@ -44,7 +40,7 @@ CODE_SEG 	SEGMENT PARA PUBLIC "CODE"
 	STR_TO_INT 		PROC NEAR
 
 		cmp 	byte ptr [di], '-'
-		jne		short positiv_num
+		jne		positiv_num
 			mov 	si, 1
 			inc 	di
 		positiv_num:
@@ -54,18 +50,18 @@ CODE_SEG 	SEGMENT PARA PUBLIC "CODE"
 
 			mov 	cl, [di]
 			cmp 	cl, 0Dh
-			je 		short end_line
+			je 		end_line
 
 			cmp 	cl, '0'
-			jl 		short error
+			jl 		error
 			cmp 	cl, '9'
-			jg 		short error
+			jg 		error
 
 			sub 	cl, '0'
 			mul 	bx 		; ax*bx -> (dx, ax)
 			add 	ax, cx
 			inc 	di
-		jmp 	short main_array_cycle
+		jmp 	main_array_cycle
 
 		error:
 			lea 	di, error_msg[1]
@@ -77,7 +73,7 @@ CODE_SEG 	SEGMENT PARA PUBLIC "CODE"
 
 		end_line:
 		cmp 	si, 1
-		jne 	short not_negative
+		jne 	not_negative
 			neg 	ax
 		not_negative:
 
@@ -88,7 +84,7 @@ CODE_SEG 	SEGMENT PARA PUBLIC "CODE"
 	INT_TO_STR 		PROC NEAR
 
 		mov 	bx, ax
-		; https://sites.google.com/site/sistprogr/lekcii1/lek8
+		
 		or 	bx, bx
 		jns		positive_value
 			mov 	al, '-'
@@ -101,11 +97,11 @@ CODE_SEG 	SEGMENT PARA PUBLIC "CODE"
 
 		main_calc_cycle:
 			xor 	dx, dx
-			div 	bx 		; http://av-assembler.ru/instructions/div.php
+			div 	bx 		
 			add 	dl, '0'
 			push 	dx
 			inc 	cx
-		test 	ax, ax		; http://av-assembler.ru/instructions/test.php
+		cmp 	ax, 0
 		jnz 	main_calc_cycle
 
 		print:
@@ -138,6 +134,9 @@ CODE_SEG 	SEGMENT PARA PUBLIC "CODE"
 
 		lea 	di, input_digit[2]
 		call 	STR_TO_INT
+
+		mov 	bx, 7
+		mul 	bx
 
 		call 	INT_TO_STR
 

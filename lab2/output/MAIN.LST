@@ -1,170 +1,169 @@
-Turbo Assembler	 Version 4.0	    02/01/21 03:14:28	    Page 1
+Turbo Assembler	 Version 4.0	    02/01/21 16:10:05	    Page 1
 lab2\main.asm
 
 
 
       1				     ;;	main.asm
-      2				     ; https://prog-cpp.ru/asm-segment/
-      3	0000			     STACK_SEG	     SEGMENT PARA STACK	"STACK"
-      4	0000  08*(53 54	41 43 4B)					     db	 8 dup ("STACK")
-      5	0028			     STACK_SEG	     ENDS
-      6
-      7	0000			     DATA_SEG	     SEGMENT PARA PUBLIC "DATA"
-      8	0000  0E 49 6E 70 75 74	20+	     hello_string    db	     14, "Input	number:	"
-      9	      6E 75 6D 62 65 72	3A+
-     10	      20
-     11	000F  05 ?? 05*(3F)		     input_digit	     db	     5,	?, 5 dup("?")
-     12	0016  0C 49 6E 76 61 6C	69+	     error_msg		     db	     12, "Invalid data"
-     13	      64 20 64 61 74 61
-     14	0023			     DATA_SEG	     ENDS
-     15
+      2
+      3	0000			     DATA_SEG	     SEGMENT PARA PUBLIC "DATA"
+      4	0000  0E 49 6E 70 75 74	20+	     hello_string    db	     14, "Input	number:	"
+      5	      6E 75 6D 62 65 72	3A+
+      6	      20
+      7	000F  05 ?? 05*(3F)		     input_digit	     db	     5,	?, 5 dup("?")
+      8	0016  0C 49 6E 76 61 6C	69+	     error_msg		     db	     12, "Invalid data"
+      9	      64 20 64 61 74 61
+     10	0023			     DATA_SEG	     ENDS
+     11
+     12
+     13	0000			     CODE_SEG	     SEGMENT PARA PUBLIC "CODE"
+     14
+     15					     ASSUME  CS:CODE_SEG, DS:DATA_SEG
      16
-     17	0000			     CODE_SEG	     SEGMENT PARA PUBLIC "CODE"
+     17	0000				     OUTPUT_PROC	     PROC NEAR
      18
-     19					     ASSUME  CS:CODE_SEG, DS:DATA_SEG, SS:STACK_SEG
-     20
-     21	0000				     OUTPUT_PROC	     PROC NEAR
-     22
-     23	0000  B4 02				     mov     ah, 02h
-     24	0002					     printing:
-     25	0002  8A 15					     mov     dl, [di]
-     26	0004  CD 21					     int     21h
-     27	0006  47					     inc     di
-     28	0007  E2 F9				     loop    printing
+     19	0000  B4 02				     mov     ah, 02h
+     20	0002					     printing:
+     21	0002  8A 15					     mov     dl, [di]
+     22	0004  CD 21					     int     21h
+     23	0006  47					     inc     di
+     24	0007  E2 F9				     loop    printing
+     25
+     26	0009  C3				     ret
+     27	000A				     OUTPUT_PROC	     ENDP
+     28
      29
-     30	0009  C3				     ret
-     31	000A				     OUTPUT_PROC	     ENDP
-     32
-     33
-     34	000A				     INPUT_VALUE     PROC NEA
-     35
-     36	000A  B4 0A				     mov     ah, 10
-     37	000C  CD 21				     int     21h
+     30	000A				     INPUT_VALUE     PROC NEA
+     31
+     32	000A  B4 0A				     mov     ah, 10
+     33	000C  CD 21				     int     21h
+     34
+     35	000E  B2 0A				     mov	     dl,0ah
+     36	0010  B4 02				 mov	     ah,02
+     37	0012  CD 21				 int	     21h
      38
-     39	000E  B2 0A				     mov	     dl,0ah
-     40	0010  B4 02				 mov	     ah,02
-     41	0012  CD 21				 int	     21h
+     39	0014  C3				     ret
+     40	0015				     INPUT_VALUE     ENDP
+     41
      42
-     43	0014  C3				     ret
-     44	0015				     INPUT_VALUE     ENDP
-     45
-     46
-     47	0015				     STR_TO_INT		     PROC NEAR
-     48
-     49	0015  80 3D 2D				     cmp     byte ptr [di], '-'
-     50	0018  75 04				     jne	     short positiv_num
-     51	001A  BE 0001					     mov     si, 1
-     52	001D  47					     inc     di
-     53	001E					     positiv_num:
-     54	001E  33 C0				     xor     ax, ax
-     55	0020  BB 000A				     mov     bx, 10
-     56	0023					     main_array_cycle:
+     43	0015				     STR_TO_INT		     PROC NEAR
+     44
+     45	0015  80 3D 2D				     cmp     byte ptr [di], '-'
+     46	0018  75 04				     jne	     positiv_num
+     47	001A  BE 0001					     mov     si, 1
+     48	001D  47					     inc     di
+     49	001E					     positiv_num:
+     50	001E  33 C0				     xor     ax, ax
+     51	0020  BB 000A				     mov     bx, 10
+     52	0023					     main_array_cycle:
+     53
+     54	0023  8A 0D					     mov     cl, [di]
+     55	0025  80 F9 0D					     cmp     cl, 0Dh
+     56	0028  74 26					     je		     end_line
      57
-Turbo Assembler	 Version 4.0	    02/01/21 03:14:28	    Page 2
+Turbo Assembler	 Version 4.0	    02/01/21 16:10:05	    Page 2
 lab2\main.asm
 
 
 
-     58	0023  8A 0D					     mov     cl, [di]
-     59	0025  80 F9 0D					     cmp     cl, 0Dh
-     60	0028  74 26					     je		     short end_line
-     61
-     62	002A  80 F9 30					     cmp     cl, '0'
-     63	002D  7C 0F					     jl		     short error
-     64	002F  80 F9 39					     cmp     cl, '9'
-     65	0032  7F 0A					     jg		     short error
-     66
-     67	0034  80 E9 30					     sub     cl, '0'
-     68	0037  F7 E3					     mul     bx		     ; ax*bx ->	(dx, ax)
-     69	0039  03 C1					     add     ax, cx
-     70	003B  47					     inc     di
-     71	003C  EB E5				     jmp     short main_array_cycle
-     72
-     73	003E					     error:
-     74	003E  BF 0017r					     lea     di, error_msg[1]
-     75	0041  B9 0000					     mov     cx, 0
-     76	0044  8A 0E 0016r				     mov     cl, error_msg[0]
-     77	0048  E8 FFB5					     call    OUTPUT_PROC
-     78	004B  B8 4C00					     mov ax, 4c00h
-     79	004E  CD 21					     int 21h
-     80
-     81	0050					     end_line:
-     82	0050  83 FE 01				     cmp     si, 1
-     83	0053  75 02				     jne     short not_negative
-     84	0055  F7 D8					     neg     ax
-     85	0057					     not_negative:
+     58	002A  80 F9 30					     cmp     cl, '0'
+     59	002D  7C 0F					     jl		     error
+     60	002F  80 F9 39					     cmp     cl, '9'
+     61	0032  7F 0A					     jg		     error
+     62
+     63	0034  80 E9 30					     sub     cl, '0'
+     64	0037  F7 E3					     mul     bx		     ; ax*bx ->	(dx, ax)
+     65	0039  03 C1					     add     ax, cx
+     66	003B  47					     inc     di
+     67	003C  EB E5				     jmp     main_array_cycle
+     68
+     69	003E					     error:
+     70	003E  BF 0017r					     lea     di, error_msg[1]
+     71	0041  B9 0000					     mov     cx, 0
+     72	0044  8A 0E 0016r				     mov     cl, error_msg[0]
+     73	0048  E8 FFB5					     call    OUTPUT_PROC
+     74	004B  B8 4C00					     mov ax, 4c00h
+     75	004E  CD 21					     int 21h
+     76
+     77	0050					     end_line:
+     78	0050  83 FE 01				     cmp     si, 1
+     79	0053  75 02				     jne     not_negative
+     80	0055  F7 D8					     neg     ax
+     81	0057					     not_negative:
+     82
+     83	0057  C3				     ret
+     84	0058				     STR_TO_INT		     ENDP
+     85
      86
-     87	0057  C3				     ret
-     88	0058				     STR_TO_INT		     ENDP
-     89
+     87	0058				     INT_TO_STR		     PROC NEAR
+     88
+     89	0058  8B D8				     mov     bx, ax
      90
-     91	0058				     INT_TO_STR		     PROC NEAR
-     92
-     93	0058  8B D8				     mov     bx, ax
-     94						     ; https://sites.google.com/site/sistprogr/lekcii1/lek8
-     95	005A  0B DB				     or	     bx, bx
-     96	005C  79 06				     jns	     positive_value
-     97	005E  B0 2D					     mov     al, '-'
-     98	0060  CD 29					     int     29h
-     99	0062  F7 DB					     neg     bx
-    100	0064					     positive_value:
-    101	0064  8B C3				     mov     ax, bx
-    102	0066  33 C9				     xor     cx, cx
-    103	0068  BB 000A				     mov     bx, 10
-    104
-    105	006B					     main_calc_cycle:
-    106	006B  33 D2					     xor     dx, dx
-    107	006D  F7 F3					     div     bx		     ; http://av-assembler.ru/instructions/div.php
-    108	006F  80 C2 30					     add     dl, '0'
-    109	0072  52					     push    dx
-    110	0073  41					     inc     cx
-    111	0074  85 C0				     test    ax, ax	     ; http://av-assembler.ru/instructions/test.php
-    112	0076  75 F3				     jnz     main_calc_cycle
-    113
-    114	0078					     print:
-Turbo Assembler	 Version 4.0	    02/01/21 03:14:28	    Page 3
+     91	005A  0B DB				     or	     bx, bx
+     92	005C  79 06				     jns	     positive_value
+     93	005E  B0 2D					     mov     al, '-'
+     94	0060  CD 29					     int     29h
+     95	0062  F7 DB					     neg     bx
+     96	0064					     positive_value:
+     97	0064  8B C3				     mov     ax, bx
+     98	0066  33 C9				     xor     cx, cx
+     99	0068  BB 000A				     mov     bx, 10
+    100
+    101	006B					     main_calc_cycle:
+    102	006B  33 D2					     xor     dx, dx
+    103	006D  F7 F3					     div     bx
+    104	006F  80 C2 30					     add     dl, '0'
+    105	0072  52					     push    dx
+    106	0073  41					     inc     cx
+    107	0074  3D 0000				     cmp     ax, 0	     ; if zf = 0
+    108	0077  75 F2				     jnz     main_calc_cycle
+    109
+    110	0079					     print:
+    111	0079  58					     pop     ax
+    112	007A  CD 29					     int     29h
+    113	007C  E2 FB				     loop    print
+    114
+Turbo Assembler	 Version 4.0	    02/01/21 16:10:05	    Page 3
 lab2\main.asm
 
 
 
-    115	0078  58					     pop     ax
-    116	0079  CD 29					     int     29h
-    117	007B  E2 FB				     loop    print
-    118
-    119	007D  C3				     ret
-    120	007E				     INT_TO_STR		     ENDP
+    115	007E  C3				     ret
+    116	007F				     INT_TO_STR		     ENDP
+    117
+    118					     ; //////////////////////{ MAIN }/////////////////////
+    119
+    120	007F				     MAIN	     PROC FAR
     121
-    122					     ; //////////////////////{ MAIN }/////////////////////
-    123
-    124	007E				     MAIN	     PROC FAR
+    122	007F  1E				     push    DS
+    123	0080  33 C0				     xor     ax, ax
+    124	0082  50				     push    ax
     125
-    126	007E  1E				     push    DS
-    127	007F  33 C0				     xor     ax, ax
-    128	0081  50				     push    ax
+    126	0083  B8 0000s				     mov     ax, DATA_SEG
+    127	0086  8E D8				     mov     DS, ax
+    128
     129
-    130	0082  B8 0000s				     mov     ax, DATA_SEG
-    131	0085  8E D8				     mov     DS, ax
-    132
-    133
-    134	0087  BF 0001r				     lea     di, hello_string[1]
-    135	008A  B9 0000				     mov     cx, 0
-    136	008D  8A 0E 0000r			     mov     cl, hello_string[0]
-    137	0091  E8 FF6C				     call    OUTPUT_PROC
-    138
-    139	0094  BA 000Fr				     lea     dx, input_digit
-    140	0097  E8 FF70				     call    INPUT_VALUE
-    141
-    142	009A  BF 0011r				     lea     di, input_digit[2]
-    143	009D  E8 FF75				     call    STR_TO_INT
-    144
-    145	00A0  E8 FFB5				     call    INT_TO_STR
-    146
-    147	00A3  CB				     ret
-    148	00A4				     MAIN    ENDP
-    149
-    150	00A4			     CODE_SEG	     ENDS
-    151				     END	     MAIN
-Turbo Assembler	 Version 4.0	    02/01/21 03:14:28	    Page 4
+    130	0088  BF 0001r				     lea     di, hello_string[1]
+    131	008B  B9 0000				     mov     cx, 0
+    132	008E  8A 0E 0000r			     mov     cl, hello_string[0]
+    133	0092  E8 FF6B				     call    OUTPUT_PROC
+    134
+    135	0095  BA 000Fr				     lea     dx, input_digit
+    136	0098  E8 FF6F				     call    INPUT_VALUE
+    137
+    138	009B  BF 0011r				     lea     di, input_digit[2]
+    139	009E  E8 FF74				     call    STR_TO_INT
+    140
+    141	00A1  BB 0007				     mov     bx, 7
+    142	00A4  F7 E3				     mul     bx
+    143
+    144	00A6  E8 FFAF				     call    INT_TO_STR
+    145
+    146	00A9  CB				     ret
+    147	00AA				     MAIN    ENDP
+    148
+    149	00AA			     CODE_SEG	     ENDS
+    150				     END	     MAIN
+Turbo Assembler	 Version 4.0	    02/01/21 16:10:05	    Page 4
 Symbol Table
 
 
@@ -174,7 +173,7 @@ Symbol Name			  Type	 Value
 
 ??DATE				  Text	 "02/01/21"
 ??FILENAME			  Text	 "main	  "
-??TIME				  Text	 "03:14:28"
+??TIME				  Text	 "16:10:05"
 ??VERSION			  Number 0400
 @CPU				  Text	 0101H
 @CURSEG				  Text	 CODE_SEG
@@ -187,21 +186,20 @@ HELLO_STRING			  Byte	 DATA_SEG:0000
 INPUT_DIGIT			  Byte	 DATA_SEG:000F
 INPUT_VALUE			  Near	 CODE_SEG:000A
 INT_TO_STR			  Near	 CODE_SEG:0058
-MAIN				  Far	 CODE_SEG:007E
+MAIN				  Far	 CODE_SEG:007F
 MAIN_ARRAY_CYCLE		  Near	 CODE_SEG:0023
 MAIN_CALC_CYCLE			  Near	 CODE_SEG:006B
-NEA				  Number [STACK_SEG:BP+0004]
+NEA				  Number [BP+0004]
 NOT_NEGATIVE			  Near	 CODE_SEG:0057
 OUTPUT_PROC			  Near	 CODE_SEG:0000
 POSITIVE_VALUE			  Near	 CODE_SEG:0064
 POSITIV_NUM			  Near	 CODE_SEG:001E
-PRINT				  Near	 CODE_SEG:0078
+PRINT				  Near	 CODE_SEG:0079
 PRINTING			  Near	 CODE_SEG:0002
 STR_TO_INT			  Near	 CODE_SEG:0015
 
 Groups & Segments		  Bit Size Align  Combine Class
 
-CODE_SEG			  16  00A4 Para	  Public  CODE
+CODE_SEG			  16  00AA Para	  Public  CODE
 DATA_SEG			  16  0023 Para	  Public  DATA
-STACK_SEG			  16  0028 Para	  Stack	  STACK
 
