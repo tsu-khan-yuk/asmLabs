@@ -47,7 +47,7 @@ CODE_SEG 	SEGMENT PARA PUBLIC "CODE"
 		xor 	ax, ax
 		mov 	bx, 10
 		main_array_cycle:
-
+			; - !!!
 			mov 	cl, [di]
 			cmp 	cl, 0Dh
 			je 		end_line

@@ -1,4 +1,4 @@
-Turbo Assembler	 Version 4.0	    02/01/21 16:10:05	    Page 1
+Turbo Assembler	 Version 4.0	    02/01/21 23:46:50	    Page 1
 lab2\main.asm
 
 
@@ -55,12 +55,12 @@ lab2\main.asm
      50	001E  33 C0				     xor     ax, ax
      51	0020  BB 000A				     mov     bx, 10
      52	0023					     main_array_cycle:
-     53
+     53							     ; - !!!
      54	0023  8A 0D					     mov     cl, [di]
      55	0025  80 F9 0D					     cmp     cl, 0Dh
      56	0028  74 26					     je		     end_line
      57
-Turbo Assembler	 Version 4.0	    02/01/21 16:10:05	    Page 2
+Turbo Assembler	 Version 4.0	    02/01/21 23:46:50	    Page 2
 lab2\main.asm
 
 
@@ -114,7 +114,7 @@ lab2\main.asm
     104	006F  80 C2 30					     add     dl, '0'
     105	0072  52					     push    dx
     106	0073  41					     inc     cx
-    107	0074  3D 0000				     cmp     ax, 0	     ; if zf = 0
+    107	0074  3D 0000				     cmp     ax, 0
     108	0077  75 F2				     jnz     main_calc_cycle
     109
     110	0079					     print:
@@ -122,7 +122,7 @@ lab2\main.asm
     112	007A  CD 29					     int     29h
     113	007C  E2 FB				     loop    print
     114
-Turbo Assembler	 Version 4.0	    02/01/21 16:10:05	    Page 3
+Turbo Assembler	 Version 4.0	    02/01/21 23:46:50	    Page 3
 lab2\main.asm
 
 
@@ -163,7 +163,7 @@ lab2\main.asm
     148
     149	00AA			     CODE_SEG	     ENDS
     150				     END	     MAIN
-Turbo Assembler	 Version 4.0	    02/01/21 16:10:05	    Page 4
+Turbo Assembler	 Version 4.0	    02/01/21 23:46:50	    Page 4
 Symbol Table
 
 
@@ -173,7 +173,7 @@ Symbol Name			  Type	 Value
 
 ??DATE				  Text	 "02/01/21"
 ??FILENAME			  Text	 "main	  "
-??TIME				  Text	 "16:10:05"
+??TIME				  Text	 "23:46:50"
 ??VERSION			  Number 0400
 @CPU				  Text	 0101H
 @CURSEG				  Text	 CODE_SEG
